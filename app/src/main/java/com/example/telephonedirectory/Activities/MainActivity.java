@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,14 +26,16 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toolbar;
+import android.widget.Toast;
 
 import com.example.telephonedirectory.GetData.Adapter;
 import com.example.telephonedirectory.GetData.GenerateNameAndPhoneNumber;
 import com.example.telephonedirectory.GetData.Phone;
 import com.example.telephonedirectory.R;
+import com.example.telephonedirectory.Validation.Validation;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,12 +78,7 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(this.returnMainActivity,new IntentFilter("return"));
 
         ImageView addButton = findViewById(R.id.add);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addContact();
-            }
-        });
+        addButton.setOnClickListener(view -> addContact());
     }
 
     @Override
@@ -151,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addContact(){
+        AtomicBoolean check = new AtomicBoolean(true);
         View view = findViewById(R.id.mainView);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View view1 = inflater.inflate(R.layout.popup_add,null);
@@ -165,12 +164,26 @@ public class MainActivity extends AppCompatActivity {
 
         Button okAdd = view1.findViewById(R.id.okAdd);
         okAdd.setOnClickListener(view2 -> {
+
             Phone phone = new Phone();
-            phone.setPhoneNumber(telephone.getText().toString());
-            phone.setName(firstName.getText()+" " +lastName.getText());
-            phones.add(1,phone);
-            adapter.notifyItemInserted(1);
-            popupWindow.dismiss();
+            String phoneNumber = telephone.getText().toString();
+            String name = firstName.getText()+" " +lastName.getText();
+            check.set(Validation.isNumber(phoneNumber));
+            if (!check.get()){
+                Toast.makeText(getApplicationContext(),"Please insert Phone Number properly",Toast.LENGTH_SHORT).show();
+            }else {
+                check.set(Validation.isString(name));
+                if (!check.get()) {
+                    Toast.makeText(getApplicationContext(), "The name does not contains any number", Toast.LENGTH_SHORT).show();
+                } else {
+                    phone.setPhoneNumber(telephone.getText().toString());
+                    phone.setName(firstName.getText() + " " + lastName.getText());
+                    phones.add(1, phone);
+                    adapter.notifyItemInserted(1);
+                    //close the Pop-up
+                    popupWindow.dismiss();
+                }
+            }
         });
 
         Button cancelAdd = view1.findViewById(R.id.cancelAdd);
