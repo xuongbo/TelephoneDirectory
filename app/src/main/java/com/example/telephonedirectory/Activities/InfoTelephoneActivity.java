@@ -1,8 +1,10 @@
 package com.example.telephonedirectory.Activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -97,12 +99,27 @@ public class InfoTelephoneActivity extends AppCompatActivity {
     }
 
     public void deleteContact(View view){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        Bundle bundle = getIntent().getExtras();
-        Log.d("position",String.valueOf(bundle.getInt("position")));
-        editor.putInt("position",bundle.getInt("position")).apply();
-        sendBroadcast(new Intent().setAction("return"));
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Contact");
+        builder.setMessage("Are you sure you want to delete this contact");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = preferences.edit();
+            Bundle bundle = getIntent().getExtras();
+            editor.putInt("position",bundle.getInt("position")).apply();
+            sendBroadcast(new Intent().setAction("return"));
+            finish();
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+       AlertDialog alert = builder.create();
+       alert.show();
     }
 }
