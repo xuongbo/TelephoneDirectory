@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/listTeplephone"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,25 +9,36 @@
 
     <TextView
         android:id="@+id/Name"
-        android:layout_width="198dp"
-        android:layout_height="68dp"
+        android:layout_width="333dp"
+        android:layout_height="60dp"
+        android:layout_alignStart="@+id/phoneNumber"
+        android:layout_alignLeft="@+id/phoneNumber"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:background="@android:color/transparent"
-        android:gravity="center|left"
+        android:gravity="center|top|left"
         android:text="TextView"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        android:textColor="#030000"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/phoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_width="336dp"
+        android:layout_height="55dp"
+
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
-
-        android:layout_toRightOf="@+id/Name"
+        android:layout_toEndOf="@+id/imageView"
+        android:layout_toRightOf="@+id/imageView"
         android:background="@android:color/transparent"
-        android:gravity="center"
+        android:gravity="bottom|center|left"
         android:text="TextView"
-        android:textColor="#FFFFFF"
+        android:textColor="#775959"
         android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="67dp"
+        android:layout_height="56dp"
+        app:srcCompat="@drawable/ic_face" />
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.telephonedirectory.GetData;
+package com.example.telephonedirectory.getData;
 
 
 import android.content.Context;
@@ -13,8 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.telephonedirectory.Activities.InfoTelephoneActivity;
+import com.example.telephonedirectory.mainActivities.InfoTelephoneActivity;
 import com.example.telephonedirectory.R;
+import com.example.telephonedirectory.mainActivities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     public List<Phone> phonesFiltered;
 
     public PhonesAdapterListener listener;
-
-    public Adapter(List<Phone> phones) {
-        this.phones = phones;
-    }
 
     public Adapter(Context context, List<Phone> phones) {
         this.context = context;
@@ -60,7 +57,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         View view = inflater.inflate(R.layout.layout_list_telephone,parent,false);
         return new ViewHolder(view);
 
-
     }
 
     @Override
@@ -68,15 +64,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         Phone phone = phonesFiltered.get(position);
         holder.name.setText(phone.getName());
         holder.phoneNumber.setText(String.valueOf(phone.getPhoneNumber()));
+
         holder.itemView.setOnClickListener(view -> {
-            String[] data = new String[2];
-            data[0] = phone.getName();
-            data[1] = phone.getPhoneNumber();
-            Context context = view.getContext();
-            Intent intent = new Intent(context, InfoTelephoneActivity.class);
-            intent.putExtra("data",data);
-            intent.putExtra("position",position);
-            context.startActivity(intent);
+            openInfo(phone,view.getContext(),position);
         });
     }
 
@@ -118,5 +108,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     public interface PhonesAdapterListener {
         void onPhoneSelected(Phone phone);
     }
-
+    
+    public void openInfo(Phone phone,Context context, Integer position){
+        String[] data = new String[2];
+        data[0] = phone.getName();
+        data[1] = phone.getPhoneNumber();
+        Intent intent = new Intent(context, InfoTelephoneActivity.class);
+        intent.putExtra("data",data);
+        intent.putExtra("position",position);
+        context.startActivity(intent);
+    }
 }

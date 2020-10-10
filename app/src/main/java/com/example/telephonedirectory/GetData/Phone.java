@@ -1,4 +1,4 @@
-package com.example.telephonedirectory.GetData;
+package com.example.telephonedirectory.getData;
 
 public class Phone {
     String name;
