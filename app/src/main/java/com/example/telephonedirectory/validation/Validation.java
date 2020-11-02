@@ -1,4 +1,4 @@
-package com.example.telephonedirectory.validation;
+package com.example.telephonedirectory.Validation;
 
 public class Validation {
 
@@ -9,7 +9,8 @@ public class Validation {
         } catch (Exception e){
             return false;
         }
-        return number.length() == 11;
+        if (number.length() != 11) return false;
+        return true;
     }
     public static boolean isString(String string){
         String number ="0123456789";
